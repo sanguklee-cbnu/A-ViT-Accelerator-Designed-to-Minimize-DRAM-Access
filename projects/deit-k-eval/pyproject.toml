@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deit-k-eval"
+version = "0.1.0"
+description = "Reproducible DeiT-Tiny/16 ImageNet-1k evaluation with modular k-assignment experiments."
+requires-python = ">=3.10"
+dependencies = [
+  "torch>=2.2",
+  "torchvision>=0.17",
+  "timm>=1.0.0",
+  "transformers>=4.40",
+  "pillow>=10.0",
+  "matplotlib>=3.8",
+  "tqdm>=4.66",
+  "scipy>=1.11",
+]
+
+[project.scripts]
+deit-k-inspect = "deit_k_eval.inspect_model:main"
+deit-k-calibrate = "deit_k_eval.calibrate_k:main"
+deit-k-evaluate = "deit_k_eval.evaluate:main"
+deit-k-run-experiments = "deit_k_eval.run_experiments:main"
+
+[tool.setuptools.packages.find]
+include = ["deit_k_eval*"]

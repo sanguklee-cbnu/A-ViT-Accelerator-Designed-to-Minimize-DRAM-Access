@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="650" viewBox="0 0 1700 650">
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2e6bdc"/>
+    </marker>
+    <marker id="arrow-dark" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#111827"/>
+    </marker>
+    <style>
+      .title { font: 700 30px Arial, sans-serif; fill: #111827; }
+      .subtitle { font: 600 15px Arial, sans-serif; fill: #334155; }
+      .section { font: 700 26px Arial, sans-serif; fill: #111827; }
+      .label { font: 700 17px Arial, sans-serif; fill: #111827; }
+      .small { font: 500 14px Arial, sans-serif; fill: #111827; }
+      .mini { font: 500 12px Arial, sans-serif; fill: #111827; }
+      .dash { fill: none; stroke: #111827; stroke-width: 2; stroke-dasharray: 8 7; }
+      .box { fill: #ffffff; stroke: #111827; stroke-width: 2; }
+      .soft { fill: #f8fafc; stroke: #64748b; stroke-width: 1.6; }
+      .master { fill: #bfe7f3; stroke: #0f4c81; stroke-width: 2; }
+      .slave { fill: #ffc88f; stroke: #9a5a10; stroke-width: 2; }
+      .formatter { fill: #eef6ff; stroke: #1d4ed8; stroke-width: 2; }
+      .memory { fill: #ecfdf5; stroke: #047857; stroke-width: 2; }
+      .ctrl { fill: #fff7ed; stroke: #c2410c; stroke-width: 2; }
+      .key { fill: #fffbea; stroke: #ca8a04; stroke-width: 1.8; }
+      .wire { stroke: #2e6bdc; stroke-width: 2.4; fill: none; marker-end: url(#arrow-blue); }
+      .wire-back { stroke: #2e6bdc; stroke-width: 2.4; fill: none; marker-start: url(#arrow-blue); }
+      .bus { stroke: #111827; stroke-width: 2.6; fill: none; marker-end: url(#arrow-dark); }
+      .bus-back { stroke: #111827; stroke-width: 2.6; fill: none; marker-start: url(#arrow-dark); }
+      .thin { stroke-width: 1.8; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1700" height="650" fill="#ffffff"/>
+  <text x="40" y="48" class="title">Existing SPI code structure</text>
+  <text x="40" y="78" class="subtitle">Original project structure: formatter-like control is mixed into wrapper modules, not separated as standalone task blocks.</text>
+
+  <rect x="315" y="105" width="500" height="395" class="dash"/>
+  <text x="485" y="138" class="section">Simulation master side</text>
+
+  <rect x="860" y="105" width="790" height="395" class="dash"/>
+  <text x="1145" y="138" class="section">DUT / FPGA-side slave block</text>
+
+  <rect x="35" y="195" width="155" height="180" class="box"/>
+  <text x="70" y="270" class="label">tb_SPI_M3.v</text>
+  <text x="68" y="296" class="small">test sequence</text>
+
+  <rect x="340" y="165" width="185" height="230" class="formatter"/>
+  <text x="375" y="204" class="label">SPI_Master</text>
+  <text x="383" y="228" class="label">_M3_top.v</text>
+  <line x1="360" y1="246" x2="505" y2="246" stroke="#1d4ed8" stroke-width="1.4"/>
+  <text x="362" y="272" class="small">transaction formatter</text>
+  <text x="362" y="294" class="small">addr phase / hold</text>
+  <text x="362" y="316" class="small">data phase / end</text>
+  <text x="362" y="338" class="small">read-data capture</text>
+
+  <rect x="600" y="185" width="155" height="150" class="master"/>
+  <text x="628" y="236" class="label">SPI_Master</text>
+  <text x="653" y="260" class="label">_M3.v</text>
+  <text x="625" y="289" class="small">32-bit shifter</text>
+  <text x="636" y="309" class="small">SCK divider</text>
+
+  <rect x="885" y="185" width="160" height="150" class="slave"/>
+  <text x="920" y="236" class="label">SPI_Slave.v</text>
+  <text x="918" y="267" class="small">32-bit shifter</text>
+  <text x="918" y="288" class="small">MOSI in / MISO out</text>
+
+  <rect x="1110" y="160" width="215" height="215" class="memory"/>
+  <text x="1148" y="204" class="label">SPI_Mem_32_X.v</text>
+  <line x1="1132" y1="222" x2="1302" y2="222" stroke="#047857" stroke-width="1.4"/>
+  <text x="1134" y="249" class="small">address/data phase FSM</text>
+  <text x="1134" y="272" class="small">read/write decode</text>
+  <text x="1134" y="295" class="small">internal mem[0:3]</text>
+  <text x="1134" y="318" class="small">phase0/phase1 regs</text>
+
+  <rect x="1405" y="175" width="175" height="170" class="ctrl"/>
+  <text x="1432" y="235" class="label">Controller</text>
+  <text x="1446" y="259" class="label">_SCx4.v</text>
+  <text x="1429" y="291" class="small">application logic</text>
+  <text x="1451" y="313" class="small">out_sc0..3</text>
+
+  <rect x="1070" y="410" width="465" height="62" rx="9" class="soft"/>
+  <text x="1092" y="436" class="label">SCConv_x4_Cont.v</text>
+  <text x="1092" y="458" class="small">wraps SPI_Mem_32_X + Controller_SCx4, registers SCK/nSS/run</text>
+
+  <rect x="548" y="412" width="205" height="62" rx="9" class="soft"/>
+  <text x="572" y="438" class="label">Master clock</text>
+  <text x="572" y="460" class="small">clk + SCKdiv_val</text>
+
+  <rect x="1175" y="560" width="385" height="52" rx="9" class="soft"/>
+  <text x="1198" y="591" class="small">FPGA_Top.v: board wrapper for SCConv_x4_Cont only</text>
+
+  <rect x="35" y="525" width="835" height="88" rx="10" class="key"/>
+  <text x="58" y="553" class="label">Key point</text>
+  <text x="58" y="579" class="small">No standalone data formatter module exists in the original code.</text>
+  <text x="58" y="601" class="small">SPI_Master_M3_top contains master-side formatting; SPI_Mem_32_X contains slave-side memory access formatting.</text>
+
+  <line x1="190" y1="220" x2="340" y2="220" class="wire"/>
+  <text x="204" y="209" class="small">addr[31:0]</text>
+  <line x1="190" y1="257" x2="340" y2="257" class="wire"/>
+  <text x="204" y="246" class="small">wr_data[31:0]</text>
+  <line x1="190" y1="294" x2="340" y2="294" class="wire"/>
+  <text x="224" y="283" class="small">start / ctrl</text>
+  <line x1="340" y1="340" x2="190" y2="340" class="wire-back"/>
+  <text x="205" y="329" class="small">rd_data[31:0]</text>
+
+  <line x1="525" y1="220" x2="600" y2="220" class="wire"/>
+  <text x="535" y="207" class="small">tx_data[31:0]</text>
+  <line x1="525" y1="260" x2="600" y2="260" class="wire"/>
+  <text x="544" y="248" class="small">tx_sig</text>
+  <line x1="600" y1="300" x2="525" y2="300" class="wire-back"/>
+  <text x="528" y="322" class="small">rx_data / done</text>
+
+  <line x1="755" y1="210" x2="885" y2="210" class="bus"/>
+  <text x="786" y="196" class="small">nSS</text>
+  <line x1="755" y1="247" x2="885" y2="247" class="bus"/>
+  <text x="789" y="235" class="small">SCK</text>
+  <line x1="755" y1="284" x2="885" y2="284" class="bus"/>
+  <text x="783" y="272" class="small">MOSI</text>
+  <line x1="885" y1="321" x2="755" y2="321" class="bus-back"/>
+  <text x="783" y="344" class="small">MISO</text>
+
+  <line x1="1045" y1="220" x2="1110" y2="220" class="wire"/>
+  <text x="1053" y="207" class="small">s_data</text>
+  <line x1="1045" y1="265" x2="1110" y2="265" class="wire"/>
+  <text x="1053" y="252" class="small">done/status</text>
+  <line x1="1110" y1="310" x2="1045" y2="310" class="wire-back"/>
+  <text x="1050" y="333" class="small">p_data</text>
+
+  <line x1="1325" y1="232" x2="1405" y2="232" class="wire"/>
+  <text x="1334" y="219" class="mini">phase0[13:0]</text>
+  <line x1="1325" y1="279" x2="1405" y2="279" class="wire"/>
+  <text x="1334" y="266" class="mini">phase1[13:0]</text>
+  <line x1="1492" y1="345" x2="1492" y2="410" class="wire thin"/>
+  <text x="1504" y="381" class="small">out_sc</text>
+
+  <line x1="650" y1="412" x2="650" y2="335" class="bus thin"/>
+  <line x1="1368" y1="560" x2="1368" y2="472" class="bus thin"/>
+</svg>
