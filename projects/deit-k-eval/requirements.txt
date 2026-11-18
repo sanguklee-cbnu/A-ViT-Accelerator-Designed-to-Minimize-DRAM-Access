@@ -1,8 +1,0 @@
-torch>=2.2
-torchvision>=0.17
-timm>=1.0.0
-transformers>=4.40
-pillow>=10.0
-matplotlib>=3.8
-tqdm>=4.66
-scipy>=1.11
